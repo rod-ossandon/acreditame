@@ -3,7 +3,6 @@ import logoImage from '@/assets/LALB.png';
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
-    // NUEVO: Estado para controlar el menú móvil
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     useEffect(() => {
