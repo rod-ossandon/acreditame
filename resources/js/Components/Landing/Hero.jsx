@@ -1,85 +1,72 @@
 import React from 'react';
-import verticalCard from '@/assets/vertical.png';
+import { motion } from 'framer-motion';
 
 export default function Hero() {
+    const itemVariants = {
+        hidden: { opacity: 0, x: -20 },
+        visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
+    };
+
     return (
-        <header id="hero" className="relative z-10 pt-32 pb-40 px-6 border-b border-white/5 overflow-hidden">
+        <section className="relative h-screen w-full flex items-center justify-center bg-transparent select-none overflow-hidden font-sans">
 
-            {/* 1. Fondo Atmosférico (Ahora en Bronce Oscuro) */}
-            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gold-dark/20 rounded-full blur-[150px] translate-x-1/3 -translate-y-1/4 pointer-events-none"></div>
+            {/* GRADIENTE DE FONDO PARA RESALTAR EL TEXTO */}
+            <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_20%_50%,_rgba(234,179,8,0.05)_0%,_transparent_50%)]" />
 
-            {/* 2. Líneas de Circuito SVG (Colores Hex actualizados a Oro y Ámbar) */}
-            <svg className="absolute right-0 top-1/2 -translate-y-1/2 w-[800px] h-[800px] opacity-20 pointer-events-none" viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M600 0V200H800M600 400V600H400M200 200H0V0" stroke="url(#paint0_linear)" strokeWidth="2"/>
-                <defs>
-                    <linearGradient id="paint0_linear" x1="0" y1="0" x2="800" y2="800" gradientUnits="userSpaceOnUse">
-                        {/* Stop 1: Oro (#D4AF37) */}
-                        <stop stopColor="#D4AF37" stopOpacity="0"/>
-                        <stop offset="0.5" stopColor="#D4AF37"/>
-                        {/* Stop 2: Ámbar (#F59E0B) */}
-                        <stop offset="1" stopColor="#F59E0B" stopOpacity="0"/>
-                    </linearGradient>
-                </defs>
-            </svg>
+            <div className="relative z-10 w-full max-w-[1600px] px-8 md:px-20 grid grid-cols-12 items-center gap-8">
 
-            <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center relative z-10">
+                {/* --- BLOQUE IZQUIERDO: TEXTO Y ACCIÓN --- */}
+                <div className="col-span-12 lg:col-span-5 flex flex-col items-start text-left">
+                    <motion.div initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.1 } } }}>
 
-                <div className="space-y-8">
+                        <motion.h2 variants={itemVariants} className="font-sans text-sm md:text-base tracking-[0.5em] text-white/50 uppercase mb-2">
+                            BIENVENIDO A
+                        </motion.h2>
 
-                    {/* 3. Título Principal (Degradado Dorado Lujoso) */}
-                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.1] uppercase tracking-tighter text-white font-wide">
-                        Bienvenido a <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-primary via-gold-secondary to-gold-light filter drop-shadow-[0_0_25px_rgba(212,175,55,0.5)]">
-                            ACREDITAME
-                        </span>
-                    </h1>
+                        <motion.h1 variants={itemVariants} className="font-['Syncopate'] text-5xl md:text-7xl font-black tracking-[-0.04em] uppercase text-white mb-6">
+                            ACREDI<span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-600">TAME</span>
+                        </motion.h1>
 
-                    <div className="flex flex-col gap-6 pt-8 border-t border-white/10 max-w-lg">
-                        <h2 className="text-xl md:text-2xl font-wide font-bold text-white uppercase tracking-wider leading-tight">
-                            ¡Impulsa tu industria al siguiente nivel!
-                        </h2>
+                        <motion.p variants={itemVariants} className="text-yellow-500 font-bold text-xs md:text-sm tracking-[0.2em] uppercase mb-4">
+                            ¡IMPULSA TU INDUSTRIA AL SIGUIENTE NIVEL!
+                        </motion.p>
 
-                        {/* 4. Palabras Clave Resaltadas en Oro y Ámbar */}
-                        <p className="text-sm md:text-base text-gray-400 font-sans leading-relaxed">
-                            Descubre cómo nuestras soluciones <span className="text-gold-primary font-semibold">innovadoras</span> y productos de calidad pueden <span className="text-gold-secondary font-semibold">revolucionar</span> tu negocio.
-                        </p>
+                        <motion.p variants={itemVariants} className="text-white/60 text-[10px] md:text-xs tracking-wider leading-relaxed max-w-sm mb-10">
+                            Descubre cómo nuestras soluciones innovadoras y productos de calidad pueden <span className="text-white font-bold">revolucionar</span> tu negocio.
+                        </motion.p>
 
-                         <div className="inline-flex items-center gap-3 text-xs md:text-sm font-wide font-bold uppercase tracking-widest text-gray-300 mt-2">
-                            <span className="relative flex h-3 w-3">
-                              {/* 5. Punto de estado "Ping" en Oro */}
-                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-primary opacity-75"></span>
-                              <span className="relative inline-flex rounded-full h-3 w-3 bg-gold-primary"></span>
-                            </span>
-                            Únete al movimiento hacia la excelencia.
-                        </div>
-                    </div>
-
-                    <div className="flex flex-wrap gap-4 pt-6">
-                        {/* 6. Botón Principal con Gradiente Dorado */}
-                        <button className="px-8 py-4 bg-gradient-to-r from-gold-primary to-gold-secondary text-white text-xs font-wide font-bold uppercase tracking-widest rounded-sm hover:shadow-[0_0_30px_rgba(212,175,55,0.5)] transition-all duration-300 hover:scale-105">
-                            Comenzar Ahora
-                        </button>
-                        <button className="px-8 py-4 border border-white/20 text-white text-xs font-wide font-bold uppercase tracking-widest rounded-sm hover:bg-white/5 transition-all duration-300">
-                            Explorar Soluciones
-                        </button>
-                    </div>
+                        {/* BOTONES */}
+                        <motion.div variants={itemVariants} className="flex flex-wrap gap-4 pointer-events-auto">
+                            <button className="px-8 py-3 bg-[#eab308] text-black font-black text-[10px] tracking-[0.2em] uppercase rounded-sm hover:bg-yellow-400 transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(234,179,8,0.3)]">
+                                Comenzar Ahora
+                            </button>
+                            <button className="px-8 py-3 border border-white/20 text-white font-bold text-[10px] tracking-[0.2em] uppercase rounded-sm hover:bg-white/5 transition-all">
+                                Explorar Soluciones
+                            </button>
+                        </motion.div>
+                    </motion.div>
                 </div>
 
-                <div className="relative flex justify-center lg:justify-end group h-[500px] items-center">
-                    {/* 7. Luz de fondo detrás de la tarjeta (Oro/Ámbar) */}
-                    <div className="absolute w-[500px] h-[500px] bg-gradient-to-tr from-gold-primary/40 via-gold-secondary/30 to-transparent rounded-full blur-[120px] animate-pulse group-hover:from-gold-primary/60 transition-all duration-700"></div>
+                {/* --- ESPACIO CENTRAL (LA ESTRELLA ESTÁ AQUÍ EN EL FONDO) --- */}
+                <div className="hidden lg:block lg:col-span-2" />
 
-                    <div className="relative z-10 Perspective-[1000px]">
-                        <img
-                            src={verticalCard}
-                            alt="ID Card Acreditame Premium"
-                            // 8. Sombra intensa Dorada para la tarjeta
-                            className="w-72 md:w-96 h-auto object-contain drop-shadow-[0_0_50px_rgba(212,175,55,0.6)] animate-float rotate-[-8deg] group-hover:rotate-0 group-hover:scale-105 transition-all duration-700 ease-in-out will-change-transform"
-                        />
-                        <div className="absolute inset-0 rounded-[2rem] border border-white/20 bg-gradient-to-b from-white/10 to-transparent mix-blend-overlay pointer-events-none"></div>
-                    </div>
-                </div>
+                {/* --- BLOQUE DERECHO: CREDENCIAL GLASSMORPISM --- */}
+                <motion.div
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 1, delay: 0.5 }}
+                    className="hidden lg:flex lg:col-span-5 justify-end"
+                >
+                </motion.div>
+
             </div>
-        </header>
+
+            {/* INDICADOR DESPLAZA */}
+            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-30">
+                <div className="w-[1px] h-10 bg-gradient-to-b from-yellow-500 to-transparent" />
+                <span className="text-[7px] tracking-[0.8em] uppercase font-mono text-yellow-500">Desplaza</span>
+            </div>
+
+        </section>
     );
 }

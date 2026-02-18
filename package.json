@@ -23,7 +23,12 @@
         "vite": "^7.0.7"
     },
     "dependencies": {
+        "@react-three/drei": "^9.90.0",
+        "@react-three/fiber": "^8.15.0",
+        "framer-motion": "^12.34.1",
         "lucide-react": "^0.562.0",
-        "swiper": "^12.1.0"
+        "simplex-noise": "^4.0.3",
+        "swiper": "^12.1.0",
+        "three": "^0.160.0"
     }
 }

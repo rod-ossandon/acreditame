@@ -13,8 +13,10 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
-                'wide': ['Unbounded', 'sans-serif'],
+                // La fuente tecnológica para la marca
+                tech: ['Syncopate', 'sans-serif'],
+                // La fuente minimalista para el resto
+                sans: ['Space Grotesk', 'sans-serif'],
             },
 
             colors: {
