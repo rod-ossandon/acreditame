@@ -1,160 +1,118 @@
 import React, { useState } from 'react';
-
+import { motion, AnimatePresence } from 'framer-motion';
 
 const services = [
-    {
-        id: 1,
-        title: "Consultoría Estratégica",
-        tag: "BUSINESS_INTELLIGENCE",
-        icon: "🧠",
-        desc: "Asesoramiento experto para escalar tu negocio con inteligencia de datos.",
-        image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop"
-    },
-    {
-        id: 2,
-        title: "Credenciales",
-        tag: "RFID_NFC_TECH",
-        icon: "🆔",
-        desc: "Identificación avanzada, tarjetas PVC y tecnología NFC de última generación.",
-        image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1470&auto=format&fit=crop"
-    },
-    {
-        id: 3,
-        title: "Merchandising",
-        tag: "LASER_&_3D_PRINT",
-        icon: "✨",
-        desc: "Grabado láser y artículos promocionales únicos para destacar tu marca.",
-        image: "https://images.unsplash.com/photo-1656360088907-5109c245851d?q=80&w=1635&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-    },
-    {
-        id: 4,
-        title: "Soporte Técnico",
-        tag: "HARDWARE_OPS",
-        icon: "🛠️",
-        desc: "Mantenimiento preventivo y correctivo para asegurar la continuidad operativa.",
-        image: "https://plus.unsplash.com/premium_photo-1661657610740-7d27accfe43c?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-    },
-    {
-        id: 5,
-        title: "Sistemas Seguridad",
-        tag: "CCTV_PROTECTION",
-        icon: "👁️",
-        desc: "Video vigilancia inteligente y monitoreo 24/7 para proteger tus activos.",
-        image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?q=80&w=2070&auto=format&fit=crop"
-    },
-    {
-        id: 6,
-        title: "Telecomunicaciones",
-        tag: "NETWORK_LINKS",
-        icon: "📡",
-        desc: "Enlaces de fibra óptica y cableado estructurado de alta velocidad.",
-        image: "https://plus.unsplash.com/premium_photo-1683134474265-7bf3848ffbd9?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-    },
-    {
-        id: 7,
-        title: "Ciberseguridad",
-        tag: "CYBER_DEFENSE",
-        icon: "🛡️",
-        desc: "Hacking ético, blindaje de servidores y protección de datos críticos.",
-        image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop"
-    }
+    { id: "01", title: "Consultoría Estratégica", tag: "INTELIGENCIA", desc: "Optimización de procesos operativos mediante análisis de datos complejos e ingeniería industrial.", image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop" },
+    { id: "02", title: "Credenciales", tag: "CREDENCIALES", desc: "Sistemas de identificación avanzada con tecnología NFC y biometría para entornos mineros.", image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1470&auto=format&fit=crop" },
+    { id: "03", title: "Merchandising", tag: "FABRICACION", desc: "Desarrollo de artículos corporativos mediante manufactura aditiva y grabado láser de precisión.", image: "https://images.unsplash.com/photo-1656360088907-5109c245851d?q=80&w=1635&auto=format&fit=crop" },
+    { id: "04", title: "Soporte Técnico", tag: "MANTENIMIENTO", desc: "Gestión de mantenimiento preventivo y correctivo de hardware con protocolos de respuesta inmediata.", image: "https://plus.unsplash.com/premium_photo-1661657610740-7d27accfe43c?q=80&w=1169&auto=format&fit=crop" },
+    { id: "05", title: "Seguridad", tag: "CCTV", desc: "Infraestructura de videovigilancia inteligente con detección de patrones y monitoreo centralizado.", image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?q=80&w=2070&auto=format&fit=crop" },
+    { id: "06", title: "Telecomunicaciones", tag: "NETWORK", desc: "Despliegue de enlaces de alta capacidad y conectividad robusta para operaciones remotas.", image: "https://plus.unsplash.com/premium_photo-1683134474265-7bf3848ffbd9?q=80&w=1170&auto=format&fit=crop" },
+    { id: "07", title: "Ciberseguridad", tag: "SEGURIDAD", desc: "Protección perimetral de redes y blindaje de bases de datos contra intrusiones externas.", image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop" }
 ];
 
 export default function ServiceSection() {
-
-    const [activeId, setActiveId] = useState(1);
+    const [activeId, setActiveId] = useState("01");
 
     return (
-        <section id="servicios" className="relative z-10 py-32 px-4 md:px-6 bg-transparent">
-            <div className="max-w-[1400px] mx-auto">
-
-                <div className="flex flex-col md:flex-row justify-between items-end mb-12 border-b border-white/10 pb-8 gap-6">
-                    <div>
-                        <span className="text-gold-primary font-mono text-xs font-bold tracking-widest mb-2 block">/// CAPABILITIES</span>
-                        <h2 className="text-3xl md:text-5xl font-bold uppercase text-white font-wide tracking-tight">
-                            Nuestros <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-primary to-gold-secondary">Servicios</span>
-                        </h2>
-                    </div>
-                    <p className="text-gray-500 text-sm text-right max-w-xs font-mono hidden md:block">
-                        Desliza o haz clic para explorar nuestras soluciones modulares.
-                    </p>
+        <section id="servicios" className="relative z-10 py-32 px-6 bg-transparent overflow-hidden font-sans">
+            <div className="max-w-[1600px] mx-auto">
+                {/* Header */}
+                <div className="mb-20 border-b border-white/10 pb-12">
+                    <span className="text-yellow-500 font-mono text-[10px] tracking-[0.5em] uppercase block mb-4">// SERVICIOS</span>
+                    <h2 className="text-5xl md:text-7xl font-black uppercase text-white tracking-tighter leading-none">
+                        Nuestros <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-700">Servicios</span>
+                    </h2>
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-4 h-[800px] md:h-[600px] w-full">
+                <div className="flex flex-col md:flex-row gap-4 h-[1000px] md:h-[650px] w-full">
                     {services.map((service) => (
-                        <div
+                        <motion.div
                             key={service.id}
+                            layout
+                            onClick={() => setActiveId(service.id)} // Click para móviles
+                            onMouseEnter={() => setActiveId(service.id)} // Hover para desktop
                             className={`
-                                relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-700 ease-in-out bg-[#0f172a] shadow-2xl
-                                ${activeId === service.id ? 'flex-[10]' : 'flex-[2] hover:flex-[3]'}
-                                h-full
+                                relative rounded-2xl overflow-hidden cursor-pointer group
+                                border border-white/5 border-t-white/10
+                                backdrop-blur-md
+                                transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]
+                                ${activeId === service.id
+                                    ? 'flex-[10] bg-zinc-900/60 shadow-[0_0_40px_rgba(0,0,0,0.5)]'
+                                    : 'flex-[1.5] bg-white/5 hover:bg-white/10 grayscale hover:grayscale-0'
+                                }
                             `}
-                            onClick={() => setActiveId(service.id)}
-                            onMouseEnter={() => setActiveId(service.id)}
                         >
-
+                            {/* --- IMAGEN DE FONDO (Con opacidad controlada) --- */}
                             <div
-                                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 hover:scale-110"
+                                className={`absolute inset-0 bg-cover bg-center transition-opacity duration-700
+                                    ${activeId === service.id ? 'opacity-40' : 'opacity-20 group-hover:opacity-30'}
+                                `}
                                 style={{ backgroundImage: `url(${service.image})` }}
-                            >
+                            />
 
-                                <div className={`absolute inset-0 bg-black transition-opacity duration-500 ${activeId === service.id ? 'opacity-40' : 'opacity-70'}`}></div>
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
-                            </div>
+                            {/* --- GRADIENTE DE SUPERPOSICIÓN (Para legibilidad) --- */}
+                            <div className={`absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/90 transition-opacity duration-500 ${activeId === service.id ? 'opacity-100' : 'opacity-80'}`} />
 
+                            {/* --- CONTENIDO --- */}
+                            <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-between z-20">
 
-                            <div className="absolute bottom-0 left-0 w-full p-6 md:p-8 flex flex-col justify-end h-full z-20">
-
-
-                                <div className={`
-                                    w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center backdrop-blur-md border border-white/20 mb-4 transition-all duration-500
-                                    ${activeId === service.id
-                                        ? 'bg-gold-primary text-black scale-100'
-                                        : 'bg-white/10 text-white scale-75 origin-bottom-left'}
-                                `}>
-                                    <span className="text-2xl md:text-3xl">{service.icon}</span>
-                                </div>
-
-                                <div className={`transition-opacity duration-500 ${activeId === service.id ? 'opacity-100 delay-200' : 'opacity-0 md:opacity-100 md:hidden'}`}>
-
-                                    <span className={`text-[10px] font-bold tracking-widest uppercase mb-2 block ${activeId === service.id ? 'text-gold-secondary' : 'text-gray-400'}`}>
-                                        {service.tag}
+                                {/* CABECERA: ID y Estado */}
+                                <div className="flex justify-between items-start">
+                                    <span className={`font-mono font-bold transition-all duration-500 ${activeId === service.id ? 'text-5xl text-yellow-500/80' : 'text-2xl text-white/20'}`}>
+                                        {service.id}
                                     </span>
-
-                                    <h3 className={`font-wide font-bold uppercase leading-none mb-4 text-white ${activeId === service.id ? 'text-2xl md:text-4xl' : 'text-xl'}`}>
-                                        {service.title}
-                                    </h3>
-
-                                    <p className={`text-gray-300 font-sans text-sm md:text-base max-w-lg transition-all duration-500 ${activeId === service.id ? 'h-auto opacity-100 translate-y-0' : 'h-0 opacity-0 translate-y-4 overflow-hidden'}`}>
-                                        {service.desc}
-                                    </p>
-
+                                    {/* Indicador de estado activo (punto brillante) */}
                                     {activeId === service.id && (
-                                        <button
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                document.querySelector('#contacto')?.scrollIntoView({ behavior: 'smooth' });
-                                            }}
-                                            className="mt-6 px-6 py-2 border border-white/30 rounded-full text-xs font-bold uppercase tracking-widest text-white hover:bg-gold-primary hover:text-black hover:border-gold-primary transition-all duration-300"
-                                        >
-                                            Cotizar ahora
-                                        </button>
+                                        <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e] animate-pulse"></div>
                                     )}
                                 </div>
 
-                                {activeId !== service.id && (
-                                    <div className="hidden md:block absolute bottom-8 left-1/2 -translate-x-1/2 w-max -rotate-90 origin-bottom-left opacity-70">
-                                        <span className="text-lg font-bold uppercase tracking-widest text-gray-400 whitespace-nowrap">
-                                            {service.title}
-                                        </span>
-                                    </div>
-                                )}
+                                {/* CUERPO: Texto e Información */}
+                                <div className="relative overflow-hidden">
+                                    {/* Título Vertical (Solo visible cuando está CERRADO) */}
+                                    {activeId !== service.id && (
+                                        <div className="absolute bottom-0 left-0 w-full">
+                                            <h3 className="text-xl font-bold text-white/40 uppercase tracking-widest [writing-mode:vertical-lr] rotate-180 origin-bottom-left whitespace-nowrap group-hover:text-yellow-500 transition-colors">
+                                                {service.title}
+                                            </h3>
+                                        </div>
+                                    )}
 
+                                    {/* Contenido Expandido (Solo visible cuando está ABIERTO) */}
+                                    <AnimatePresence mode='wait'>
+                                        {activeId === service.id && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: 10 }}
+                                                transition={{ duration: 0.4, delay: 0.1 }}
+                                                className="w-full"
+                                            >
+                                                <span className="inline-block px-2 py-1 mb-4 text-[10px] font-mono text-yellow-400 bg-yellow-400/10 border border-yellow-400/20 rounded uppercase tracking-wider backdrop-blur-sm">
+                                                    // {service.tag}
+                                                </span>
+
+                                                <h3 className="text-4xl md:text-6xl font-black text-white uppercase leading-[0.9] mb-6 drop-shadow-lg tracking-tight">
+                                                    {service.title}
+                                                </h3>
+
+                                                <p className="text-zinc-300 text-lg md:text-xl font-light leading-relaxed max-w-2xl mb-10 border-l-2 border-yellow-500/50 pl-6">
+                                                    {service.desc}
+                                                </p>
+
+                                                <button className="group flex items-center gap-4 px-8 py-4 bg-yellow-500 hover:bg-white text-black font-bold uppercase tracking-widest text-xs transition-all duration-300">
+                                                    <span>Ver</span>
+                                                    <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                                                </button>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </div>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
-
             </div>
         </section>
     );

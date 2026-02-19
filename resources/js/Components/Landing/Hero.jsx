@@ -8,39 +8,45 @@ export default function Hero() {
     };
 
     return (
-        <section className="relative h-screen w-full flex items-center justify-center bg-transparent select-none overflow-hidden font-sans">
+        <section className="relative h-screen w-full flex items-center justify-center bg-transparent select-none overflow-hidden font-sans" id='inicio'>
 
-            {/* GRADIENTE DE FONDO PARA RESALTAR EL TEXTO */}
+            {/* GRADIENTE DE FONDO */}
             <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_20%_50%,_rgba(234,179,8,0.05)_0%,_transparent_50%)]" />
 
-            <div className="relative z-10 w-full max-w-[1600px] px-8 md:px-20 grid grid-cols-12 items-center gap-8">
+            {/* CONTENEDOR PRINCIPAL */}
+            {/* Cambios: items-center en móvil, max-w-full en móvil para evitar desbordamiento */}
+            <div className="relative z-10 w-full max-w-[1600px] px-6 md:px-20 grid grid-cols-12 items-center gap-8">
 
                 {/* --- BLOQUE IZQUIERDO: TEXTO Y ACCIÓN --- */}
-                <div className="col-span-12 lg:col-span-5 flex flex-col items-start text-left">
+                {/* Desktop: col-span-5 text-left (Original)
+                   Móvil: col-span-12 text-center items-center
+                */}
+                <div className="col-span-12 lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left">
                     <motion.div initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.1 } } }}>
 
-                        <motion.h2 variants={itemVariants} className="font-sans text-sm md:text-base tracking-[0.5em] text-white/50 uppercase mb-2">
+                        <motion.h2 variants={itemVariants} className="font-sans text-xs md:text-base tracking-[0.5em] text-white/50 uppercase mb-2">
                             BIENVENIDO A
                         </motion.h2>
 
-                        <motion.h1 variants={itemVariants} className="font-['Syncopate'] text-5xl md:text-7xl font-black tracking-[-0.04em] uppercase text-white mb-6">
+                        {/* TÍTULO: Bajamos el tamaño solo en móvil (text-4xl) para que no se corte */}
+                        <motion.h1 variants={itemVariants} className="font-['Syncopate'] text-3xl sm:text-4xl md:text-7xl font-black tracking-[-0.04em] uppercase text-white mb-6 leading-tight">
                             ACREDI<span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-600">TAME</span>
                         </motion.h1>
 
-                        <motion.p variants={itemVariants} className="text-yellow-500 font-bold text-xs md:text-sm tracking-[0.2em] uppercase mb-4">
+                        <motion.p variants={itemVariants} className="text-yellow-500 font-bold text-[10px] md:text-sm tracking-[0.2em] uppercase mb-4">
                             ¡IMPULSA TU INDUSTRIA AL SIGUIENTE NIVEL!
                         </motion.p>
 
-                        <motion.p variants={itemVariants} className="text-white/60 text-[10px] md:text-xs tracking-wider leading-relaxed max-w-sm mb-10">
+                        <motion.p variants={itemVariants} className="text-white/60 text-[10px] md:text-xs tracking-wider leading-relaxed max-w-sm mb-10 mx-auto lg:mx-0">
                             Descubre cómo nuestras soluciones innovadoras y productos de calidad pueden <span className="text-white font-bold">revolucionar</span> tu negocio.
                         </motion.p>
 
-                        {/* BOTONES */}
-                        <motion.div variants={itemVariants} className="flex flex-wrap gap-4 pointer-events-auto">
-                            <button className="px-8 py-3 bg-[#eab308] text-black font-black text-[10px] tracking-[0.2em] uppercase rounded-sm hover:bg-yellow-400 transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(234,179,8,0.3)]">
+                        {/* BOTONES: Centrados en móvil, izquierda en escritorio */}
+                        <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 pointer-events-auto w-full sm:w-auto">
+                            <button className="px-8 py-4 lg:py-3 bg-[#eab308] text-black font-black text-[10px] tracking-[0.2em] uppercase rounded-sm hover:bg-yellow-400 transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(234,179,8,0.3)]">
                                 Comenzar Ahora
                             </button>
-                            <button className="px-8 py-3 border border-white/20 text-white font-bold text-[10px] tracking-[0.2em] uppercase rounded-sm hover:bg-white/5 transition-all">
+                            <button className="px-8 py-4 lg:py-3 border border-white/20 text-white font-bold text-[10px] tracking-[0.2em] uppercase rounded-sm hover:bg-white/5 transition-all backdrop-blur-sm">
                                 Explorar Soluciones
                             </button>
                         </motion.div>
@@ -50,7 +56,7 @@ export default function Hero() {
                 {/* --- ESPACIO CENTRAL (LA ESTRELLA ESTÁ AQUÍ EN EL FONDO) --- */}
                 <div className="hidden lg:block lg:col-span-2" />
 
-                {/* --- BLOQUE DERECHO: CREDENCIAL GLASSMORPISM --- */}
+                {/* --- BLOQUE DERECHO --- */}
                 <motion.div
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}

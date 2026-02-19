@@ -24,4 +24,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/terminos', function () {
+    return Inertia::render('Terms'); // Coincide con el nombre del archivo Terms.jsx
+})->name('terms');
+
 require __DIR__.'/auth.php';

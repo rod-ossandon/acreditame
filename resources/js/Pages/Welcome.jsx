@@ -7,6 +7,9 @@ import AboutSection from '@/Components/Landing/AboutSection';
 import StarVisual from '@/Components/3D/StarVisual';
 // IMPORTA EL NUEVO COMPONENTE
 import BackgroundStars from '@/Components/3D/BackgroundStars';
+import ServiceSection from '@/Components/Landing/ServiceSection';
+import ContactSection from '@/Components/Landing/ContactSection';
+import Footer from '@/Components/Landing/Footer';
 
 export default function Welcome() {
     const { scrollYProgress } = useScroll();
@@ -36,7 +39,10 @@ export default function Welcome() {
                 <main>
                     <Hero />
                     <AboutSection />
+                    <ServiceSection />
+                    <ContactSection />
                 </main>
+                <Footer />
             </div>
         </div>
     );

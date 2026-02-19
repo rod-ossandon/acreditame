@@ -53,32 +53,6 @@ export default function AboutSection() {
                         </div>
                     </div>
 
-                    {/* --- ZONA DE ACOPLAMIENTO (4 Columnas) ---
-                        Aquí es donde tu estrella ($x=3.4$) se posicionará.
-                        Añadimos un radar circular para que parezca un indicador.
-                    */}
-                    <div className="hidden lg:flex col-span-4 h-full relative items-center justify-center">
-                        <div className="relative w-full h-full flex items-center justify-center">
-
-                            {/* Radar Dinámico que "contiene" a la estrella */}
-                            <div className="absolute w-[350px] h-[350px] border border-white/5 rounded-full" />
-                            <div className="absolute w-[280px] h-[280px] border border-dashed border-yellow-500/10 rounded-full animate-[spin_20s_linear_infinite]" />
-                            <div className="absolute w-[200px] h-[200px] border border-white/5 rounded-full" />
-
-                            {/* Etiqueta de Monitoreo */}
-                            <div className="absolute bottom-20 text-center">
-                                <span className="text-[8px] font-mono text-yellow-500/40 uppercase tracking-[0.6em] block mb-2">
-                                    ACREDITAME
-                                </span>
-                                <div className="w-12 h-[1px] bg-yellow-500/20 mx-auto" />
-                            </div>
-
-                            {/* Decoraciones en los bordes para cerrar el diseño */}
-                            <div className="absolute top-1/4 right-10 w-8 h-[1px] bg-white/10" />
-                            <div className="absolute bottom-1/4 right-10 w-8 h-[1px] bg-white/10" />
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </section>
