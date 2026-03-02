@@ -7,7 +7,9 @@ function StarSystem({ scrollProgress, count = 40000 }) {
     const pointsRef = useRef();
     const { viewport } = useThree();
 
-    // 1. GEOMETRÍA (Mantenemos tu configuración actual de 10 puntas)
+    // Detectamos móvil (ancho menor a 10 unidades de Three.js)
+    const isMobile = viewport.width < 10;
+
     const { geo, initialPositions, explosionData } = useMemo(() => {
         const shape = new THREE.Shape();
         const pts = 10;
@@ -49,56 +51,55 @@ function StarSystem({ scrollProgress, count = 40000 }) {
     useFrame((state) => {
         const s = scrollProgress.get();
 
-        // --- CALIBRACIÓN DE SECCIONES (Puntos de Control) ---
-        const P_TRANSITION_1 = 0.22; // Punto de llegada a Quiénes Somos
-        const P_START_STAY = 0.45;   // Fin de estancia en Quiénes Somos
-        const P_MAX_EXPANSION = 0.75; // Máxima explosión en Servicios
-        const P_CONTACTO = 0.90;      // Inicio armado final
+        // --- AJUSTES DE LEGIBILIDAD PARA MÓVIL ---
+        // En móvil (iPhone SE, etc) la escala es mucho menor para que no tape el texto
+        const responsiveScaleBase = isMobile ? 2.4 : 3.5;
+        const responsiveScaleSmall = isMobile ? 1.5 : 2.6;
+        const responsiveScaleLarge = isMobile ? 1.0 : 6.5;
 
-        let target = { intensity: 0, posX: 0, posY: 0, scale: 3.5, spread: 5.0, lerp: 0.1 };
+        // En móvil centramos la estrella pero la bajamos (posY) para que quede bajo los botones
+        const responsivePosX = isMobile ? 0 : viewport.width / 3.4;
+        const responsivePosYBase = isMobile ? -0.1 : 0; // -0.8 baja la estrella en el Hero móvil
+        const responsivePosYQuienes = isMobile ? -1.2 : -0.2;
 
-        // FASE 1: HERO -> QUIÉNES SOMOS (Viaje y Ensamblado)
+        const P_TRANSITION_1 = 0.22;
+        const P_START_STAY = 0.45;
+        const P_MAX_EXPANSION = 0.75;
+
+        let target = { intensity: 0, posX: 0, posY: responsivePosYBase, scale: responsiveScaleBase, spread: 5.0, lerp: 0.1 };
+
         if (s < P_TRANSITION_1) {
             const p = s / P_TRANSITION_1;
-            // Curva parabólica: Explota al inicio y se cierra suavemente al final (p=1)
             target.intensity = Math.sin(p * Math.PI) * 1.0;
-            target.posX = THREE.MathUtils.lerp(0, viewport.width / 3.4, p);
-            target.posY = THREE.MathUtils.lerp(0, -0.2, p);
-            target.scale = THREE.MathUtils.lerp(3.5, 2.6, p);
-            // El magnetismo aumenta según se acerca a la sección
+            target.posX = THREE.MathUtils.lerp(0, responsivePosX, p);
+            target.posY = THREE.MathUtils.lerp(responsivePosYBase, responsivePosYQuienes, p);
+            target.scale = THREE.MathUtils.lerp(responsiveScaleBase, responsiveScaleSmall, p);
             target.lerp = THREE.MathUtils.lerp(0.06, 0.25, p);
         }
-        // FASE 2: QUIÉNES SOMOS (Estática y Nítida)
         else if (s >= P_TRANSITION_1 && s < P_START_STAY) {
-            target.intensity = 0; // Se mantiene armada al 100%
-            target.posX = viewport.width / 3.4;
-            target.posY = -0.2;
-            target.scale = 2.6;
-            target.lerp = 0.3; // Magnetismo alto para mantener la forma nítida
+            target.intensity = 0;
+            target.posX = responsivePosX;
+            target.posY = responsivePosYQuienes;
+            target.scale = responsiveScaleSmall;
+            target.lerp = 0.3;
         }
-        // FASE 3: QUIÉNES -> SERVICIOS (Explosión Progresiva)
         else if (s >= P_START_STAY && s < P_MAX_EXPANSION) {
             const p = (s - P_START_STAY) / (P_MAX_EXPANSION - P_START_STAY);
-            // La explosión crece de forma cuadrática para que sea suave al arrancar
             target.intensity = Math.pow(p, 1.5) * 2.0;
-            target.spread = 18.0;
-            target.posX = THREE.MathUtils.lerp(viewport.width / 3.4, 0, p);
-            target.posY = THREE.MathUtils.lerp(-0.2, 0.2, p);
-            target.scale = THREE.MathUtils.lerp(2.6, 6.5, p);
+            target.spread = isMobile ? 10.0 : 18.0;
+            target.posX = THREE.MathUtils.lerp(responsivePosX, 0, p);
+            target.posY = THREE.MathUtils.lerp(responsivePosYQuienes, 0.2, p);
+            target.scale = THREE.MathUtils.lerp(responsiveScaleSmall, responsiveScaleLarge, p);
             target.lerp = 0.05;
         }
-        // FASE 4: SERVICIOS -> CONTACTO (Re-ensamblado Final)
         else {
-            const p = (s - P_MAX_EXPANSION) / (1 - P_MAX_EXPANSION);
-            // La intensidad baja de 2.0 a 0 de forma suave
-            target.intensity = THREE.MathUtils.lerp(2.0, 0, p);
+            target.intensity = 0;
             target.posX = 0;
             target.posY = 0;
-            target.scale = THREE.MathUtils.lerp(6.5, 3.2, p);
+            target.scale = responsiveScaleBase;
             target.lerp = 0.25;
         }
 
-        // --- APLICACIÓN DE FÍSICAS ---
         if (pointsRef.current) {
             const attr = pointsRef.current.geometry.attributes.position;
             for (let i = 0; i < count; i++) {
@@ -106,15 +107,11 @@ function StarSystem({ scrollProgress, count = 40000 }) {
                 const tx = initialPositions[i3] + (explosionData[i3] * target.intensity * target.spread);
                 const ty = initialPositions[i3+1] + (explosionData[i3+1] * target.intensity * 5.0);
                 const tz = initialPositions[i3+2] + (explosionData[i3+2] * target.intensity * 5.0);
-
-                // El lerp asegura que los puntos fluyan, no que salten
                 attr.array[i3] += (tx - attr.array[i3]) * target.lerp;
                 attr.array[i3+1] += (ty - attr.array[i3+1]) * target.lerp;
                 attr.array[i3+2] += (tz - attr.array[i3+2]) * target.lerp;
             }
             attr.needsUpdate = true;
-
-            // Rotación constante y suavizado de grupo
             pointsRef.current.rotation.y += 0.003;
             pointsRef.current.position.x = THREE.MathUtils.lerp(pointsRef.current.position.x, target.posX, 0.05);
             pointsRef.current.position.y = THREE.MathUtils.lerp(pointsRef.current.position.y, target.posY, 0.05);
@@ -124,14 +121,26 @@ function StarSystem({ scrollProgress, count = 40000 }) {
 
     return (
         <points ref={pointsRef} geometry={geo}>
-            <pointsMaterial size={0.024} vertexColors transparent opacity={0.8} blending={THREE.AdditiveBlending} depthWrite={false} />
+            <pointsMaterial
+                size={isMobile ? 0.015 : 0.024} // Partículas más pequeñas en móvil para no deslumbrar
+                vertexColors
+                transparent
+                opacity={isMobile ? 0.5 : 0.8} // Menos opacidad en móvil mejora contraste
+                blending={THREE.AdditiveBlending}
+                depthWrite={false}
+            />
         </points>
     );
 }
 
 export default function StarVisual({ scrollProgress }) {
     return (
-        <Canvas camera={{ position: [0, 0, 12], fov: 45 }} gl={{ alpha: true }} style={{ pointerEvents: 'none', position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 5 }}>
+        <Canvas
+            camera={{ position: [0, 0, 15], fov: 45 }}
+            gl={{ alpha: true, antialias: false }}
+            dpr={[2, 1.9]} // Limitamos resolución en móvil para ahorrar RAM
+            style={{ pointerEvents: 'none', position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 5 }}
+        >
             <ambientLight intensity={1.5} />
             <StarSystem scrollProgress={scrollProgress} />
         </Canvas>

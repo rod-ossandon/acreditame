@@ -1,8 +1,38 @@
 import React from 'react';
-import { ArrowUp, Linkedin, Instagram, Mail, ShieldCheck } from 'lucide-react';
+import { ArrowUp, Instagram, Mail, MapPin } from 'lucide-react';
 import { Link } from '@inertiajs/react';
 
 export default function Footer() {
+
+    // --- FUNCIÓN DE NAVEGACIÓN INTELIGENTE ---
+    const handleNavigation = (e, id) => {
+        e.preventDefault();
+
+        // 1. Verificamos si estamos fuera de la Home (ej: /servicios/ciberseguridad)
+        if (window.location.pathname !== '/') {
+            // Redirección forzada a la Home + Ancla
+            window.location.href = `/#${id}`;
+            return;
+        }
+
+        // 2. Si estamos en la Home, ejecutamos el scroll suave
+        const element = document.getElementById(id);
+        if (element) {
+            const offset = 100; // Margen para el Navbar
+            const bodyRect = document.body.getBoundingClientRect().top;
+            const elementRect = element.getBoundingClientRect().top;
+            const elementPosition = elementRect - bodyRect;
+            const offsetPosition = elementPosition - offset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+
+            // Actualizamos la URL sin recargar
+            window.history.pushState(null, '', `/#${id}`);
+        }
+    };
 
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -18,7 +48,7 @@ export default function Footer() {
 
             <div className="max-w-7xl mx-auto px-6 py-20 relative">
 
-                {/* --- SECCIÓN SUPERIOR: DATOS Y NAVEGACIÓN --- */}
+                {/* --- SECCIÓN SUPERIOR --- */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
 
                     {/* 1. IDENTIDAD */}
@@ -33,62 +63,62 @@ export default function Footer() {
                             Ingeniería y desarrollo de software industrial desde el corazón minero de Chile. Fusionamos robustez operativa con innovación digital.
                         </p>
 
-                        {/* Coordenadas Antofagasta (Toque técnico) */}
                         <div className="inline-flex items-center gap-2 px-3 py-1 border border-white/10 bg-white/5 rounded text-[10px] font-mono text-yellow-500/80">
-                            <MapPinIcon className="w-3 h-3" />
+                            <MapPin className="w-3 h-3" />
                             <span>23.6509° S, 70.3975° W // ANTOFAGASTA_HQ</span>
                         </div>
                     </div>
 
-                    {/* 2. NAVEGACIÓN RÁPIDA */}
+                    {/* 2. NAVEGACIÓN RÁPIDA (Actualizado con handleNavigation) */}
                     <div>
                         <h4 className="font-mono text-xs font-bold text-yellow-500 uppercase tracking-widest mb-6">// DIRECTORIO</h4>
                         <ul className="space-y-4">
-                            {['Nosotros', 'Servicios', 'Contacto'].map((item) => (
-                                <li key={item}>
-                                    <Link href={`/#${item.toLowerCase()}`} className="text-zinc-400 hover:text-white hover:pl-2 transition-all duration-300 text-sm flex items-center gap-2 group">
+                            {[
+                                { name: 'Inicio', id: 'inicio' },
+                                { name: 'Nosotros', id: 'nosotros' },
+                                { name: 'Servicios', id: 'servicios' },
+                                { name: 'Contacto', id: 'contacto' }
+                            ].map((item) => (
+                                <li key={item.id}>
+                                    <a
+                                        href={`/#${item.id}`}
+                                        onClick={(e) => handleNavigation(e, item.id)}
+                                        className="text-zinc-400 hover:text-white hover:pl-2 transition-all duration-300 text-sm flex items-center gap-2 group cursor-pointer"
+                                    >
                                         <span className="w-1 h-1 bg-yellow-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                                        {item}
-                                    </Link>
+                                        {item.name}
+                                    </a>
                                 </li>
                             ))}
                         </ul>
                     </div>
 
-                    {/* 3. LEGAL & CERTIFICACIONES */}
+                    {/* 3. LEGAL & PROTOCOLOS */}
                     <div>
                         <h4 className="font-mono text-xs font-bold text-yellow-500 uppercase tracking-widest mb-6">// PROTOCOLOS</h4>
                         <ul className="space-y-4">
-
-                            {/* Enlace a Términos Generales */}
                             <li>
                                 <Link href="/terminos" className="text-zinc-400 hover:text-white text-sm transition-colors flex items-center gap-2 group">
                                     <span className="w-1 h-1 bg-yellow-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                                     Términos y Condiciones
                                 </Link>
                             </li>
-
-                            {/* --- NUEVO ENLACE A FAQ --- */}
                             <li>
-                                {/* Usamos el #faq para activar el scroll automático */}
                                 <Link href="/terminos#faq" className="text-zinc-400 hover:text-cyan-400 text-sm transition-colors flex items-center gap-2 group">
                                     <span className="w-1 h-1 bg-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                                     Preguntas Frecuentes
                                 </Link>
                             </li>
-
-                            {/* Enlace a Privacidad (apunta al mismo archivo pero diferente sección) */}
                             <li>
                                 <Link href="/terminos#privacidad_intro" className="text-zinc-400 hover:text-green-400 text-sm transition-colors flex items-center gap-2 group">
                                     <span className="w-1 h-1 bg-green-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                                     Política de Privacidad
                                 </Link>
                             </li>
-
                         </ul>
                     </div>
 
-                    {/* 4. CONEXIÓN & ESTADO */}
+                    {/* 4. CONEXIÓN */}
                     <div className="flex flex-col justify-between">
                         <div>
                             <h4 className="font-mono text-xs font-bold text-yellow-500 uppercase tracking-widest mb-6">// RED_ENLACE</h4>
@@ -98,7 +128,6 @@ export default function Footer() {
                             </div>
                         </div>
 
-                        {/* Botón Volver Arriba */}
                         <button
                             onClick={scrollToTop}
                             className="group mt-10 flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-yellow-500 transition-colors w-fit"
@@ -111,13 +140,12 @@ export default function Footer() {
                     </div>
                 </div>
 
-                {/* --- BARRA INFERIOR: COPYRIGHT --- */}
+                {/* --- BARRA INFERIOR --- */}
                 <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                     <p className="text-zinc-500 text-xs font-mono">
                         © {new Date().getFullYear()} ACREDITAME LTDA. | TODOS LOS DERECHOS RESERVADOS.
                     </p>
 
-                    {/* Indicador de estado del sistema */}
                     <div className="flex items-center gap-2 px-3 py-1 bg-green-500/5 rounded-full border border-green-500/10">
                         <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
                         <span className="text-[10px] font-bold text-green-500 tracking-wider">SYSTEMS: ONLINE</span>
@@ -128,7 +156,6 @@ export default function Footer() {
     );
 }
 
-// Botón social auxiliar
 const SocialButton = ({ icon, href, label }) => (
     <a
         href={href}
@@ -137,12 +164,4 @@ const SocialButton = ({ icon, href, label }) => (
     >
         {icon}
     </a>
-);
-
-// Icono de Mapa simple (puedes importarlo de lucide-react si prefieres)
-const MapPinIcon = ({ className }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-    </svg>
 );

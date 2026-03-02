@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ServiceController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,5 +28,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/terminos', function () {
     return Inertia::render('Terms'); // Coincide con el nombre del archivo Terms.jsx
 })->name('terms');
+
+Route::get('/servicios/{slug}', [ServiceController::class, 'show'])->name('services.show');
 
 require __DIR__.'/auth.php';
