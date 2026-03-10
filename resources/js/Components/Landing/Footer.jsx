@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowUp, Instagram, Mail, MapPin } from 'lucide-react';
 import { Link } from '@inertiajs/react';
+import logo from '../../assets/LALB.png';
 
 export default function Footer() {
 
@@ -55,23 +56,22 @@ export default function Footer() {
                     <div className="space-y-6">
                         <div className="flex items-center gap-3">
                             <div className="w-8 h-8 bg-yellow-500 rounded-sm flex items-center justify-center">
-                                <span className="font-black text-black text-lg">A</span>
+                                <img
+                                    src={logo} // USAMOS LA VARIABLE IMPORTADA
+                                    alt="Logo Acreditame"
+                                    className="relative w-12 h-12 object-contain filter drop-shadow-[0_0_5px_rgba(234,179,8,0.4)] transition-transform duration-500 group-hover:scale-110"
+                                />
                             </div>
-                            <h3 className="text-2xl font-black uppercase tracking-tighter">ACREDITAME</h3>
+                            <h3 className="text-2xl font-goldman uppercase tracking-tighter">ACREDITAME</h3>
                         </div>
                         <p className="text-zinc-400 text-sm leading-relaxed max-w-xs">
                             Ingeniería y desarrollo de software industrial desde el corazón minero de Chile. Fusionamos robustez operativa con innovación digital.
                         </p>
-
-                        <div className="inline-flex items-center gap-2 px-3 py-1 border border-white/10 bg-white/5 rounded text-[10px] font-mono text-yellow-500/80">
-                            <MapPin className="w-3 h-3" />
-                            <span>23.6509° S, 70.3975° W // ANTOFAGASTA_HQ</span>
-                        </div>
                     </div>
 
                     {/* 2. NAVEGACIÓN RÁPIDA (Actualizado con handleNavigation) */}
                     <div>
-                        <h4 className="font-mono text-xs font-bold text-yellow-500 uppercase tracking-widest mb-6">// DIRECTORIO</h4>
+                        <h4 className="font-mono text-xs font-goldman text-yellow-500 uppercase tracking-widest mb-6">// DIRECTORIO</h4>
                         <ul className="space-y-4">
                             {[
                                 { name: 'Inicio', id: 'inicio' },
@@ -95,7 +95,7 @@ export default function Footer() {
 
                     {/* 3. LEGAL & PROTOCOLOS */}
                     <div>
-                        <h4 className="font-mono text-xs font-bold text-yellow-500 uppercase tracking-widest mb-6">// PROTOCOLOS</h4>
+                        <h4 className="font-mono text-xs font-goldman text-yellow-500 uppercase tracking-widest mb-6">// PROTOCOLOS</h4>
                         <ul className="space-y-4">
                             <li>
                                 <Link href="/terminos" className="text-zinc-400 hover:text-white text-sm transition-colors flex items-center gap-2 group">
@@ -121,7 +121,7 @@ export default function Footer() {
                     {/* 4. CONEXIÓN */}
                     <div className="flex flex-col justify-between">
                         <div>
-                            <h4 className="font-mono text-xs font-bold text-yellow-500 uppercase tracking-widest mb-6">// RED_ENLACE</h4>
+                            <h4 className="font-mono text-xs font-bold text-yellow-500 uppercase tracking-widest mb-6">// RED_SOCIALES</h4>
                             <div className="flex gap-4">
                                 <SocialButton icon={<Instagram size={18} />} href="#" label="Instagram" />
                                 <SocialButton icon={<Mail size={18} />} href="mailto:contacto@acreditame.cl" label="Email" />
@@ -130,7 +130,7 @@ export default function Footer() {
 
                         <button
                             onClick={scrollToTop}
-                            className="group mt-10 flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-yellow-500 transition-colors w-fit"
+                            className="group mt-10 flex items-center gap-4 text-xs font-goldman uppercase tracking-widest text-zinc-500 hover:text-yellow-500 transition-colors w-fit"
                         >
                             <span>Volver a superficie</span>
                             <div className="p-3 border border-white/10 group-hover:border-yellow-500 rounded-full group-hover:bg-yellow-500 group-hover:text-black transition-all">
@@ -148,7 +148,7 @@ export default function Footer() {
 
                     <div className="flex items-center gap-2 px-3 py-1 bg-green-500/5 rounded-full border border-green-500/10">
                         <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
-                        <span className="text-[10px] font-bold text-green-500 tracking-wider">SYSTEMS: ONLINE</span>
+                        <span className="text-[10px] font-bold text-green-500 tracking-wider">SISTEMA: ACTIVO</span>
                     </div>
                 </div>
             </div>

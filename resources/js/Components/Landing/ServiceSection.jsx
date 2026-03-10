@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from '@inertiajs/react'; // Importamos Link para navegación Inertia
+import { Link } from '@inertiajs/react';
+import { ArrowRight } from 'lucide-react';
 
 const services = [
     { id: "01", slug: "consultoria-estrategica", title: "Consultoría Estratégica", tag: "INTELIGENCIA", desc: "Optimización de procesos operativos mediante análisis de datos complejos e ingeniería industrial.", image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop" },
@@ -14,104 +15,147 @@ const services = [
 
 export default function ServiceSection() {
     const [activeId, setActiveId] = useState("01");
+    const containerRef = useRef(null);
+
+    // --- LÓGICA DE ESCANEO DE SCROLL (MÓVIL) ---
+    useEffect(() => {
+        // Solo activamos si es móvil para evitar conflictos con el hover de desktop
+        if (window.innerWidth >= 768) return;
+
+        const observerOptions = {
+            root: null,
+            // Zona de captura: Franja central del 20% del viewport
+            rootMargin: '-40% 0px -40% 0px',
+            threshold: 0
+        };
+
+        const handleIntersect = (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('data-id');
+                    setActiveId(id);
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(handleIntersect, observerOptions);
+        const elements = containerRef.current?.querySelectorAll('.service-card');
+        elements?.forEach((el) => observer.observe(el));
+
+        return () => observer.disconnect();
+    }, []);
 
     return (
-        <section id="servicios" className="relative z-10 py-32 px-6 bg-transparent overflow-hidden font-sans">
+        <section id="servicios" className="relative z-10 py-24 md:py-32 px-4 sm:px-6 bg-transparent overflow-hidden font-goldman">
             <div className="max-w-[1600px] mx-auto">
-                {/* Header */}
-                <div className="mb-20 border-b border-white/10 pb-12">
-                    <span className="text-yellow-500 font-mono text-[10px] tracking-[0.5em] uppercase block mb-4">// SERVICIOS</span>
-                    <h2 className="text-5xl md:text-7xl font-black uppercase text-white tracking-tighter leading-none">
+
+                {/* Header Industrial */}
+                <div className="mb-16 md:mb-20 border-b border-white/10 pb-12">
+                    <span className="text-yellow-500 font-mono text-[10px] tracking-[0.5em] uppercase block mb-4">
+                        // SERVICIOS
+                    </span>
+                    <h2 className="text-4xl md:text-7xl font-goldman uppercase text-white tracking-tighter leading-none">
                         Nuestros <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-700">Servicios</span>
                     </h2>
                 </div>
 
-                {/* Contenedor de Acordeón */}
-                <div className="flex flex-col md:flex-row gap-4 h-auto md:h-[650px] w-full">
+                {/* Contenedor Acordeón con Scroll Snap */}
+                <div
+                    ref={containerRef}
+                    className="flex flex-col md:flex-row gap-6 md:gap-4 h-auto md:h-[650px] w-full snap-y snap-mandatory"
+                >
                     {services.map((service) => (
                         <motion.div
                             key={service.id}
+                            data-id={service.id}
                             layout
-                            onClick={() => setActiveId(service.id)}
-                            onMouseEnter={() => setActiveId(service.id)}
                             className={`
-                                relative rounded-2xl overflow-hidden cursor-pointer group
-                                border border-white/5 border-t-white/10
-                                backdrop-blur-md
-                                transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]
+                                service-card relative rounded-2xl md:rounded-3xl overflow-hidden cursor-pointer group
+                                border border-white/5 snap-center transition-all duration-700 ease-in-out
                                 ${activeId === service.id
-                                    ? 'flex-[10] min-h-[450px] md:min-h-0 bg-zinc-900/60 shadow-[0_0_40px_rgba(0,0,0,0.5)]'
-                                    : 'flex-[1.5] min-h-[80px] md:min-h-0 bg-white/5 hover:bg-white/10 grayscale hover:grayscale-0'
+                                    ? 'flex-[10] min-h-[480px] md:min-h-0 bg-zinc-900/60 shadow-[0_0_50px_rgba(0,0,0,0.4)]'
+                                    : 'flex-[1] min-h-[90px] md:min-h-0 bg-white/5 grayscale opacity-40 scale-[0.98]'
                                 }
                             `}
+                            // Interactividad: Click/Hover solo en Desktop
+                            onClick={() => { if (window.innerWidth >= 768) setActiveId(service.id) }}
+                            onMouseEnter={() => { if (window.innerWidth >= 768) setActiveId(service.id) }}
                         >
-                            {/* Imagen de Fondo */}
+                            {/* Visual Engine (Imagen de fondo) */}
                             <div
-                                className={`absolute inset-0 bg-cover bg-center transition-opacity duration-700
-                                    ${activeId === service.id ? 'opacity-40' : 'opacity-20 group-hover:opacity-30'}
+                                className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000
+                                    ${activeId === service.id ? 'opacity-30 scale-105' : 'opacity-10 scale-100'}
                                 `}
-                                style={{ backgroundImage: `url(${service.image})` }}
+                                style={{ backgroundImage: `url(${service.image})`, transition: 'all 1.5s ease-out' }}
                             />
 
+                            {/* Capa de contraste HUD */}
                             <div className={`absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/90 transition-opacity duration-500 ${activeId === service.id ? 'opacity-100' : 'opacity-80'}`} />
 
-                            <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-between z-20">
-                                {/* Header ID */}
+                            <motion.div layout className="absolute inset-0 p-6 md:p-10 flex flex-col justify-between z-20">
+
+                                {/* Status Header */}
                                 <div className="flex justify-between items-start">
-                                    <span className={`font-mono font-bold transition-all duration-500 ${activeId === service.id ? 'text-5xl text-yellow-500/80' : 'text-2xl text-white/20'}`}>
+                                    <span className={`font-goldman transition-all duration-500 ${activeId === service.id ? 'text-3xl md:text-5xl text-yellow-500' : 'text-xl text-white/20'}`}>
                                         {service.id}
                                     </span>
                                     {activeId === service.id && (
-                                        <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e] animate-pulse"></div>
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-[8px] tracking-widest text-green-500 hidden md:block">Servicios</span>
+                                            <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e] animate-pulse"></div>
+                                        </div>
                                     )}
                                 </div>
 
-                                <div className="relative overflow-hidden">
-                                    {/* Título Vertical cuando está CERRADO */}
+                                <div className="relative">
+                                    {/* Título Vertical (Solo Desktop Cerrado) */}
                                     {activeId !== service.id && (
-                                        <div className="absolute bottom-0 left-0 w-full">
-                                            <h3 className="text-xl font-bold text-white/40 uppercase tracking-widest md:[writing-mode:vertical-lr] md:rotate-180 origin-bottom-left whitespace-nowrap group-hover:text-yellow-500 transition-colors">
+                                        <div className="absolute bottom-0 left-0 w-full hidden md:block">
+                                            <h3 className="text-xl font-bold text-white/30 uppercase tracking-[0.2em] [writing-mode:vertical-lr] rotate-100 origin-bottom-left whitespace-nowrap group-hover:text-yellow-500 transition-colors">
                                                 {service.title}
                                             </h3>
                                         </div>
                                     )}
 
-                                    {/* Contenido Expandido */}
+                                    {/* Contenido Expandido con AnimatePresence */}
                                     <AnimatePresence mode='wait'>
                                         {activeId === service.id && (
                                             <motion.div
-                                                initial={{ opacity: 0, y: 20 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                exit={{ opacity: 0, y: 10 }}
+                                                initial={{ opacity: 0, x: -20 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                exit={{ opacity: 0, x: 10 }}
                                                 className="w-full"
                                             >
-                                                <span className="inline-block px-2 py-1 mb-4 text-[10px] font-mono text-yellow-400 bg-yellow-400/10 border border-yellow-400/20 rounded uppercase tracking-wider">
+                                                <span className="inline-block px-3 py-1 mb-4 text-[9px] font-mono text-yellow-400 bg-yellow-400/10 border border-yellow-400/20 rounded uppercase tracking-[0.3em]">
                                                     // {service.tag}
                                                 </span>
 
-                                                <h3 className="text-4xl md:text-6xl font-black text-white uppercase leading-[0.9] mb-6 tracking-tight">
+                                                <h3 className="text-3xl md:text-6xl font-goldman text-white uppercase leading-none mb-6 tracking-tighter">
                                                     {service.title}
                                                 </h3>
 
-                                                <p className="text-zinc-300 text-lg md:text-xl font-light leading-relaxed max-w-2xl mb-10 border-l-2 border-yellow-500/50 pl-6">
+                                                <p className="text-zinc-400 text-sm md:text-lg font-light leading-relaxed max-w-2xl mb-10 border-l-2 border-yellow-500/50 pl-6 italic">
                                                     {service.desc}
                                                 </p>
 
-                                                {/* --- BOTÓN DE NAVEGACIÓN --- */}
                                                 <Link
                                                     href={`/servicios/${service.slug}`}
-                                                    className="group/btn inline-flex items-center gap-4 px-8 py-4 bg-yellow-500 hover:bg-white text-black font-bold uppercase tracking-widest text-xs transition-all duration-300"
+                                                    className="group inline-flex items-center gap-4 px-10 py-4 bg-yellow-500 text-black font-black uppercase tracking-[0.2em] text-[10px] hover:bg-white transition-all shadow-[0_0_30px_rgba(234,179,8,0.2)]"
                                                 >
-                                                    <span>Explorar Servicio</span>
-                                                    <svg className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                                    </svg>
+                                                    EXPLORAR SERVICIO
+                                                    <div className="flex items-center gap-2">
+                                                        <ArrowRight
+                                                            size={14}
+                                                            strokeWidth={3}
+                                                            className="transform transition-transform duration-300 group-hover:translate-x-1"
+                                                        />
+                                                    </div>
                                                 </Link>
                                             </motion.div>
                                         )}
                                     </AnimatePresence>
                                 </div>
-                            </div>
+                            </motion.div>
                         </motion.div>
                     ))}
                 </div>

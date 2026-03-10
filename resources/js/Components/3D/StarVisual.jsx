@@ -48,76 +48,87 @@ function StarSystem({ scrollProgress, count = 40000 }) {
         return { geo: bufferGeo, initialPositions: init, explosionData: vecs };
     }, [count]);
 
-    useFrame((state) => {
-        const s = scrollProgress.get();
+ useFrame((state) => {
+    const s = scrollProgress.get();
 
-        // --- AJUSTES DE LEGIBILIDAD PARA MÓVIL ---
-        // En móvil (iPhone SE, etc) la escala es mucho menor para que no tape el texto
-        const responsiveScaleBase = isMobile ? 2.4 : 3.5;
-        const responsiveScaleSmall = isMobile ? 1.5 : 2.6;
-        const responsiveScaleLarge = isMobile ? 1.0 : 6.5;
+    // --- CONFIGURACIÓN RESPONSIVA ---
+    const isMobile = viewport.width < 10;
+    const responsiveScaleBase = isMobile ? 2.4 : 3.5;
+    const responsiveScaleContact = isMobile ? 2.0 : 4.0; // Tamaño al final
 
-        // En móvil centramos la estrella pero la bajamos (posY) para que quede bajo los botones
-        const responsivePosX = isMobile ? 0 : viewport.width / 3.4;
-        const responsivePosYBase = isMobile ? -0.1 : 0; // -0.8 baja la estrella en el Hero móvil
-        const responsivePosYQuienes = isMobile ? -1.2 : -0.2;
+    // --- PUNTOS DE CONTROL DE LA ANIMACIÓN ---
+    const P_EXPLOSION_PEAK = 0.6;   // Punto máximo de desorden
+    const P_START_FORMATION = 0.8;  // Empieza a juntarse de nuevo
+    const P_FINAL_CONTACT = 0.95;   // Estrella formada totalmente
 
-        const P_TRANSITION_1 = 0.22;
-        const P_START_STAY = 0.45;
-        const P_MAX_EXPANSION = 0.75;
+    let target = {
+        intensity: 0,
+        posX: 0,
+        posY: 0,
+        scale: responsiveScaleBase,
+        spread: 0,
+        lerp: 0.1
+    };
 
-        let target = { intensity: 0, posX: 0, posY: responsivePosYBase, scale: responsiveScaleBase, spread: 5.0, lerp: 0.1 };
+    if (s < P_EXPLOSION_PEAK) {
+        // Fase 1: De la calma a la explosión total
+        const p = s / P_EXPLOSION_PEAK;
+        target.intensity = p * 0.5; // Aumenta la dispersión
+        target.spread = isMobile ? 12 : 20;
+        target.posX = THREE.MathUtils.lerp(0, viewport.width / 4, p);
+        target.scale = THREE.MathUtils.lerp(responsiveScaleBase, responsiveScaleBase * 1.5, p);
+        target.lerp = 0.05; // Movimiento orgánico
+    }
+    else if (s >= P_EXPLOSION_PEAK && s < P_START_FORMATION) {
+        // Fase 2: Mantener el caos mientras baja
+        target.intensity = 1.5;
+        target.spread = isMobile ? 12 : 20;
+        target.posX = viewport.width / 4;
+        target.posY = -viewport.height / 4;
+        target.lerp = 0.02; // Más lento para que se vea el desorden
+    }
+    else if (s >= P_START_FORMATION) {
+        // Fase 3: RE-FORMACIÓN EN CONTACTO
+        // p va de 0 (caos) a 1 (estrella perfecta)
+        const p = Math.min((s - P_START_FORMATION) / (P_FINAL_CONTACT - P_START_FORMATION), 1);
 
-        if (s < P_TRANSITION_1) {
-            const p = s / P_TRANSITION_1;
-            target.intensity = Math.sin(p * Math.PI) * 1.0;
-            target.posX = THREE.MathUtils.lerp(0, responsivePosX, p);
-            target.posY = THREE.MathUtils.lerp(responsivePosYBase, responsivePosYQuienes, p);
-            target.scale = THREE.MathUtils.lerp(responsiveScaleBase, responsiveScaleSmall, p);
-            target.lerp = THREE.MathUtils.lerp(0.06, 0.25, p);
+        target.intensity = 1.5 * (1 - p); // La intensidad vuelve a 0 (forma original)
+        target.spread = isMobile ? 12 : 20;
+
+        // Posicionamos la estrella detrás del formulario de contacto
+        target.posX = THREE.MathUtils.lerp(viewport.width / 4, 0, p);
+        target.posY = THREE.MathUtils.lerp(-viewport.height / 4, -0.5, p);
+        target.scale = THREE.MathUtils.lerp(responsiveScaleBase * 1.5, responsiveScaleContact, p);
+
+        // Aumentamos el lerp al final para que los puntos "encajen" con precisión
+        target.lerp = THREE.MathUtils.lerp(0.05, 0.15, p);
+    }
+
+    if (pointsRef.current) {
+        const attr = pointsRef.current.geometry.attributes.position;
+        for (let i = 0; i < count; i++) {
+            const i3 = i * 3;
+            // Calculamos posición destino: Inicial + (Vector de explosión * Intensidad actual)
+            const tx = initialPositions[i3] + (explosionData[i3] * target.intensity * target.spread);
+            const ty = initialPositions[i3+1] + (explosionData[i3+1] * target.intensity * 8.0);
+            const tz = initialPositions[i3+2] + (explosionData[i3+2] * target.intensity * 8.0);
+
+            // Suavizado de posición de cada partícula
+            attr.array[i3] += (tx - attr.array[i3]) * target.lerp;
+            attr.array[i3+1] += (ty - attr.array[i3+1]) * target.lerp;
+            attr.array[i3+2] += (tz - attr.array[i3+2]) * target.lerp;
         }
-        else if (s >= P_TRANSITION_1 && s < P_START_STAY) {
-            target.intensity = 0;
-            target.posX = responsivePosX;
-            target.posY = responsivePosYQuienes;
-            target.scale = responsiveScaleSmall;
-            target.lerp = 0.3;
-        }
-        else if (s >= P_START_STAY && s < P_MAX_EXPANSION) {
-            const p = (s - P_START_STAY) / (P_MAX_EXPANSION - P_START_STAY);
-            target.intensity = Math.pow(p, 1.5) * 2.0;
-            target.spread = isMobile ? 10.0 : 18.0;
-            target.posX = THREE.MathUtils.lerp(responsivePosX, 0, p);
-            target.posY = THREE.MathUtils.lerp(responsivePosYQuienes, 0.2, p);
-            target.scale = THREE.MathUtils.lerp(responsiveScaleSmall, responsiveScaleLarge, p);
-            target.lerp = 0.05;
-        }
-        else {
-            target.intensity = 0;
-            target.posX = 0;
-            target.posY = 0;
-            target.scale = responsiveScaleBase;
-            target.lerp = 0.25;
-        }
+        attr.needsUpdate = true;
 
-        if (pointsRef.current) {
-            const attr = pointsRef.current.geometry.attributes.position;
-            for (let i = 0; i < count; i++) {
-                const i3 = i * 3;
-                const tx = initialPositions[i3] + (explosionData[i3] * target.intensity * target.spread);
-                const ty = initialPositions[i3+1] + (explosionData[i3+1] * target.intensity * 5.0);
-                const tz = initialPositions[i3+2] + (explosionData[i3+2] * target.intensity * 5.0);
-                attr.array[i3] += (tx - attr.array[i3]) * target.lerp;
-                attr.array[i3+1] += (ty - attr.array[i3+1]) * target.lerp;
-                attr.array[i3+2] += (tz - attr.array[i3+2]) * target.lerp;
-            }
-            attr.needsUpdate = true;
-            pointsRef.current.rotation.y += 0.003;
-            pointsRef.current.position.x = THREE.MathUtils.lerp(pointsRef.current.position.x, target.posX, 0.05);
-            pointsRef.current.position.y = THREE.MathUtils.lerp(pointsRef.current.position.y, target.posY, 0.05);
-            pointsRef.current.scale.setScalar(THREE.MathUtils.lerp(pointsRef.current.scale.x, target.scale, 0.05));
-        }
-    });
+        // Rotación constante de la estrella
+        pointsRef.current.rotation.y += 0.002;
+
+        // Posicionamiento global del sistema
+        pointsRef.current.position.x = THREE.MathUtils.lerp(pointsRef.current.position.x, target.posX, 0.05);
+        pointsRef.current.position.y = THREE.MathUtils.lerp(pointsRef.current.position.y, target.posY, 0.05);
+        pointsRef.current.scale.setScalar(THREE.MathUtils.lerp(pointsRef.current.scale.x, target.scale, 0.05));
+    }
+});
 
     return (
         <points ref={pointsRef} geometry={geo}>

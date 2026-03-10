@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Foundation\Application;
@@ -26,9 +27,13 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/terminos', function () {
-    return Inertia::render('Terms'); // Coincide con el nombre del archivo Terms.jsx
+    return Inertia::render('Terms');
 })->name('terms');
 
 Route::get('/servicios/{slug}', [ServiceController::class, 'show'])->name('services.show');
+Route::post('/contacto', [ContactController::class, 'store'])->name('contacto.store');
+Route::get('/nosotros-detalle', function () {
+    return inertia('Landing/AboutDetail');
+});
 
 require __DIR__.'/auth.php';

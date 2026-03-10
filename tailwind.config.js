@@ -13,10 +13,8 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                // La fuente tecnológica para la marca
-                tech: ['Syncopate', 'sans-serif'],
-                // La fuente minimalista para el resto
-                sans: ['Space Grotesk', 'sans-serif'],
+                'goldman': ['Goldman', 'sans-serif'],
+                'sans': ['Goldman', 'sans-serif'],
             },
 
             colors: {
@@ -56,6 +54,15 @@ export default {
                     '50%': { opacity: '0.6', transform: 'scale(1.1)' },
                 }
             },
+            animation: {
+                'infinite-scroll': 'infinite-scroll 25s linear infinite',
+            },
+            keyframes: {
+                'infinite-scroll': {
+                    from: { transform: 'translateX(0)' },
+                    to: { transform: 'translateX(-100%)' },
+                }
+            }
         },
     },
 

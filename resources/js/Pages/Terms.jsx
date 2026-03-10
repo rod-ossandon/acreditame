@@ -33,7 +33,7 @@ export default function Terms() {
     };
 
     return (
-        <div className="bg-black min-h-screen text-white selection:bg-yellow-500/30 font-sans relative">
+        <div className="bg-black min-h-screen text-white selection:bg-yellow-500/30 font-goldman relative">
             <Head title="Legal & Soporte | Acreditame" />
 
             {/* --- FONDO TÉCNICO --- */}
@@ -57,7 +57,9 @@ export default function Terms() {
                         transition={{ duration: 0.8 }}
                         className="mb-16 border-b border-white/10 pb-8"
                     >
-                        <div className="flex items-center gap-3 mb-4"> <span className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></span> <span className="text-yellow-500 font-mono text-xs font-bold tracking-[0.3em] uppercase bg-yellow-500/5 px-2 py-1 rounded border border-yellow-500/10"> /// Descubre Nuestros Términos y Condiciones </span> </div> <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-4"> Condiciones de Uso  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-700">Claras y Concisas</span> </h1> <p className="mt-4 text-zinc-400 max-w-3xl text-lg leading-relaxed border-l-4 border-yellow-500 pl-6"> Explora los términos que rigen el uso de nuestros servicios y productos,  <strong className="text-white">diseñados para proteger tus intereses y garantizar una experiencia segura.</strong> </p>
+                        <div className="flex items-center gap-3 mb-4"> <span className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></span> <span className="text-yellow-500 font-goldman text-xs tracking-[0.3em] uppercase bg-yellow-500/5 px-2 py-1 rounded border border-yellow-500/10"> /// Descubre Nuestros Términos y Condiciones </span> </div>
+                        <h1 className="text-4xl md:text-6xl font-goldman uppercase tracking-tighter mb-4"> Condiciones de Uso  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-700">Claras y Concisas</span> </h1>
+                        <p className="mt-4 text-zinc-400 max-w-3xl text-lg leading-relaxed border-l-4 border-yellow-500 pl-6"> Explora los términos que rigen el uso de nuestros servicios y productos,  <strong className="text-white">diseñados para proteger tus intereses y garantizar una experiencia segura.</strong> </p>
                     </motion.div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -68,7 +70,7 @@ export default function Terms() {
 
                                 {/* GRUPO 1: TÉRMINOS */}
                                 <div>
-                                    <p className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest mb-3 pl-4 border-l-2 border-yellow-500">
+                                    <p className="font-goldman text-[10px] text-zinc-500 uppercase tracking-widest mb-3 pl-4 border-l-2 border-yellow-500">
                                         Términos de Servicio
                                     </p>
                                     <nav className="space-y-1">
@@ -82,7 +84,7 @@ export default function Terms() {
 
                                 {/* GRUPO 2: PRIVACIDAD */}
                                 <div>
-                                    <p className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest mb-3 pl-4 border-l-2 border-green-500">
+                                    <p className="font-goldman text-[10px] text-zinc-500 uppercase tracking-widest mb-3 pl-4 border-l-2 border-green-500">
                                         Privacidad
                                     </p>
                                     <nav className="space-y-1">
@@ -95,7 +97,7 @@ export default function Terms() {
 
                                 {/* GRUPO 3: SOPORTE / FAQ */}
                                 <div>
-                                    <p className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest mb-3 pl-4 border-l-2 border-cyan-500">
+                                    <p className="font-goldman text-[10px] text-zinc-500 uppercase tracking-widest mb-3 pl-4 border-l-2 border-cyan-500">
                                         Ayuda
                                     </p>
                                     <nav className="space-y-1">

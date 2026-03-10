@@ -61,7 +61,7 @@ export default function Navbar() {
                     {/* --- LOGO --- */}
                     <Link href="/" className="flex items-center gap-4 group" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
                         <motion.img whileTap={{ scale: 0.95 }} src={logo} alt="Logo" className="h-9 md:h-11 w-auto invert transition-transform group-hover:scale-105" />
-                        <span className="font-['Syncopate'] font-bold text-white tracking-[0.3em] text-xs md:text-sm hidden sm:block group-hover:text-yellow-500 transition-colors">ACREDITAME</span>
+                        <span className="font-['Syncopate'] font-goldman text-white tracking-[0.3em] text-xs md:text-sm hidden sm:block group-hover:text-yellow-500 transition-colors">ACREDITAME</span>
                     </Link>
 
                     {/* --- MENÚ DESKTOP --- */}
