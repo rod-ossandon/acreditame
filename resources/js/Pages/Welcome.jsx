@@ -9,6 +9,7 @@ import ServiceSection from '@/Components/Landing/ServiceSection';
 import ContactSection from '@/Components/Landing/ContactSection';
 import Footer from '@/Components/Landing/Footer';
 import ScrollLogo from '@/Components/3D/StarVisual'; // Ajustado a tu ruta de componentes
+import WhatsAppButton from '@/Components/Landing/WhatsAppButton';
 
 export default function Welcome() {
     const { scrollYProgress } = useScroll();
@@ -29,6 +30,8 @@ export default function Welcome() {
             <div className="fixed inset-0 z-[5] pointer-events-none">
                 <ScrollLogo scrollProgress={scrollYProgress} />
             </div>
+
+            <WhatsAppButton />
 
             {/* CONTENIDO PRINCIPAL: Capa superior */}
             <div className="relative z-[10]">

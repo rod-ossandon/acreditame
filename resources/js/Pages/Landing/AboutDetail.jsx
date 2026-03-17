@@ -10,6 +10,7 @@ import Navbar from '@/Components/Landing/Navbar';
 import BackgroundStars from '@/Components/3D/BackgroundStars';
 import { useScroll, useTransform } from 'framer-motion';
 import Footer from '@/Components/Landing/Footer';
+import WhatsAppButton from '@/Components/Landing/WhatsAppButton';
 
 export default function AboutDetail() {
     const { scrollYProgress } = useScroll();
@@ -18,6 +19,7 @@ export default function AboutDetail() {
     return (
         <div className="min-h-screen bg-[#020203] text-gray-300 font-goldman selection:bg-yellow-500/30 overflow-x-hidden">
             <Head title="Nosotros | ACREDITAME" />
+            <WhatsAppButton />
 
             {/* Fondo Estelar y Grilla HUD */}
             <motion.div style={{ opacity: opacityBg }} className="fixed inset-0 z-0 pointer-events-none">

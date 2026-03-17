@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 import Navbar from '@/Components/Landing/Navbar';
 import Footer from '@/Components/Landing/Footer';
+import WhatsAppButton from '@/Components/Landing/WhatsAppButton';
 
 export default function Terms() {
     const [activeSection, setActiveSection] = useState('general');
@@ -35,6 +36,7 @@ export default function Terms() {
     return (
         <div className="bg-black min-h-screen text-white selection:bg-yellow-500/30 font-goldman relative">
             <Head title="Legal & Soporte | Acreditame" />
+            <WhatsAppButton />
 
             {/* --- FONDO TÉCNICO --- */}
             <div className="fixed inset-0 z-0 pointer-events-none opacity-20"

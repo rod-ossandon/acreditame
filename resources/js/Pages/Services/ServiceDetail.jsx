@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Navbar from '@/Components/Landing/Navbar';
 import Footer from '@/Components/Landing/Footer';
 import { ArrowLeft, CheckCircle2, ChevronRight } from 'lucide-react';
+import WhatsAppButton from '@/Components/Landing/WhatsAppButton';
 
 export default function ServiceDetail({ service }) {
     const handleContactClick = (e) => {
@@ -27,6 +28,7 @@ export default function ServiceDetail({ service }) {
         <div className="min-h-screen bg-[#020203] text-white font-goldman selection:bg-yellow-500/30 overflow-x-hidden">
             <Head title={`${service.title} | Acreditame`} />
             <Navbar />
+            <WhatsAppButton />
 
             <main className="relative pt-32 md:pt-40 lg:pt-48 pb-16 md:pb-24 px-4 md:px-8">
                 <div className="absolute inset-0 opacity-[0.05] pointer-events-none"
