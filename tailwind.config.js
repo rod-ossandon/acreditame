@@ -20,24 +20,26 @@ export default {
             colors: {
                 'tech-bg': '#050014',
                 'tech-card': '#0f172a',
-                // Tus nuevos colores principales:
-                'gold-primary': '#D4AF37',   // Oro Metálico Clásico (Reemplaza al morado principal)
-                'gold-secondary': '#F59E0B', // Ámbar Intenso (Reemplaza al azul)
-                'gold-light': '#FDE68A',     // Oro Claro / Crema (Para brillos y acentos)
-                'gold-dark': '#92400E',      // Bronce Oscuro (Para profundidad)
+                'gold-primary': '#D4AF37',
+                'gold-secondary': '#F59E0B',
+                'gold-light': '#FDE68A',
+                'gold-dark': '#92400E',
             },
 
             backgroundImage: {
                 'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
             },
 
+            // UNIFICADO: Todas las animaciones en un solo objeto
             animation: {
                 'blob': 'blob 15s infinite',
                 'spin-slow': 'spin 10s linear infinite',
                 'float': 'float 6s ease-in-out infinite',
-                'pulse-glow': 'pulse-glow 4s ease-in-out infinite'
+                'pulse-glow': 'pulse-glow 4s ease-in-out infinite',
+                'infinite-scroll': 'infinite-scroll 25s linear infinite',
             },
 
+            // UNIFICADO: Todos los keyframes en un solo objeto
             keyframes: {
                 blob: {
                     '0%': { transform: 'translate(0px, 0px) scale(1)' },
@@ -52,12 +54,7 @@ export default {
                 'pulse-glow': {
                     '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
                     '50%': { opacity: '0.6', transform: 'scale(1.1)' },
-                }
-            },
-            animation: {
-                'infinite-scroll': 'infinite-scroll 25s linear infinite',
-            },
-            keyframes: {
+                },
                 'infinite-scroll': {
                     from: { transform: 'translateX(0)' },
                     to: { transform: 'translateX(-100%)' },
