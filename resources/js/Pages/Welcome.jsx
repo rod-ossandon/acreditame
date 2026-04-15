@@ -3,13 +3,11 @@ import { Head } from '@inertiajs/react';
 import { useScroll } from 'framer-motion';
 import Navbar from '@/Components/Landing/Navbar';
 import Hero from '@/Components/Landing/Hero';
-import AboutSection from '@/Components/Landing/AboutSection';
-import BackgroundStars from '@/Components/3D/BackgroundStars';
 import ServiceSection from '@/Components/Landing/ServiceSection';
 import ContactSection from '@/Components/Landing/ContactSection';
 import Footer from '@/Components/Landing/Footer';
-import ScrollLogo from '@/Components/3D/StarVisual'; // Ajustado a tu ruta de componentes
 import WhatsAppButton from '@/Components/Landing/WhatsAppButton';
+import CursorGlow from '@/Components/Landing/CursorGlow';
 
 export default function Welcome() {
     const { scrollYProgress } = useScroll();
@@ -23,6 +21,7 @@ export default function Welcome() {
             {/* CONTENIDO PRINCIPAL: Sin capas 3D estorbando */}
             <div className="relative z-[10]">
                 <Navbar />
+                <CursorGlow />
                 <main>
                     <Hero />{/*
                     <AboutSection /> */}
