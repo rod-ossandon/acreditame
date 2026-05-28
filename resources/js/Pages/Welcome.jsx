@@ -14,7 +14,7 @@ export default function Welcome() {
 
     return (
         <div className="min-h-screen bg-[#050505] text-gray-300 overflow-x-hidden relative font-goldman">
-            <Head title="Servicios - Acreditame" />
+            <Head title="Acreditame" />
 
             <WhatsAppButton />
 
